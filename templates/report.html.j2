@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VaultLoader Report</title>
+<style>
+  :root {
+    --bg: #0b0d10;
+    --panel: #14181d;
+    --border: #232a33;
+    --text: #d7dde5;
+    --muted: #7d8896;
+    --ok: #3fb950;
+    --fail: #f85149;
+    --warn: #d29922;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 28px 0 10px; color: var(--text); }
+  .meta { color: var(--muted); font-size: 12px; }
+  .meta span { margin-right: 16px; }
+  .badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+  }
+  .badge.dry { color: var(--warn); border-color: var(--warn); }
+  .badge.real { color: var(--ok); border-color: var(--ok); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  th, td {
+    text-align: left;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; }
+  tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; }
+  .ok { color: var(--ok); }
+  .fail { color: var(--fail); }
+  .empty { color: var(--muted); font-style: italic; padding: 10px; }
+  footer { margin-top: 32px; color: var(--muted); font-size: 11px; border-top: 1px solid var(--border); padding-top: 10px; }
+</style>
+</head>
+<body>
+  <h1>VaultLoader Report</h1>
+  <div class="meta">
+    <span>Fecha: {{ generated_at }}</span>
+    <span>CSV: {{ csv_name }}</span>
+    <span>Modo: <span class="badge {{ 'dry' if dry_run else 'real' }}">{{ 'dry-run' if dry_run else 'real' }}</span></span>
+  </div>
+
+  <h2>Resumen</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Total</th>
+        <th>Válidas</th>
+        <th>Errores schema</th>
+        <th>Onboarded</th>
+        <th>Fallidas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">{{ summary.total }}</td>
+        <td class="num">{{ summary.valid }}</td>
+        <td class="num">{{ summary.schema_errors }}</td>
+        <td class="num ok">{{ summary.onboarded }}</td>
+        <td class="num fail">{{ summary.failed }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Errores de schema</h2>
+  {% if schema_errors %}
+  <table>
+    <thead>
+      <tr><th>Fila</th><th>Username</th><th>Errores</th></tr>
+    </thead>
+    <tbody>
+      {% for err in schema_errors %}
+      <tr>
+        <td class="num">{{ err.row }}</td>
+        <td>{{ err.username if err.username else '-' }}</td>
+        <td class="fail">{{ err.errors | join('; ') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">Sin errores de schema.</div>
+  {% endif %}
+
+  <h2>Resultados de API</h2>
+  {% if api_results %}
+  <table>
+    <thead>
+      <tr><th>Username</th><th>Address</th><th>Safe</th><th>Status</th><th>Detalle</th></tr>
+    </thead>
+    <tbody>
+      {% for r in api_results %}
+      <tr>
+        <td>{{ r.username }}</td>
+        <td>{{ r.address }}</td>
+        <td>{{ r.safe_name }}</td>
+        <td class="{{ 'ok' if r.status == 'OK' else 'fail' }}">{{ r.status }}</td>
+        <td>{{ r.detail if r.detail else '-' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">Sin resultados de API.</div>
+  {% endif %}
+
+  <footer>VaultLoader — Javier Garrido Ortiz</footer>
+</body>
+</html>

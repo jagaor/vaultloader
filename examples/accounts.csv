@@ -1,0 +1,12 @@
+username,address,platform_id,safe_name,secret_type,secret,name,port,extra_pass1
+root,10.20.30.11,UnixSSH,LinuxServers-PRD,password,R0otPr0d#2024,root-linux-prd-01,22,
+svc_backup,10.20.30.12,UnixSSH,LinuxServers-PRD,password,B4ckup$Prd99,svc-backup-linux-prd,22,
+admin_ops,10.20.30.13,UnixSSH,LinuxServers-PRD,password,OpsAdm1n!Prd,admin-ops-linux-prd,22,
+Administrator,10.20.40.21,WinServerLocal,WindowsDomain-PRD,password,W1nAdm1n#Prd,administrator-win-prd-01,,
+svc_sql,10.20.40.22,WinServerLocal,WindowsDomain-PRD,password,SqlSvc$Prd2024,svc-sql-win-prd,,
+backup_svc,10.20.40.23,WinServerLocal,WindowsDomain-PRD,password,BkSvc!Prd77,backup-svc-win-prd,,
+oracle_prod,10.20.50.31,OracleDB,DBAccounts-PRD,password,Or4cl3#Prd2024,oracle-prod-db-01,1521,
+app_oracle,10.20.50.32,OracleDB,DBAccounts-PRD,password,AppOr4cl3$Prd,app-oracle-db-01,1521,
+report_user,10.20.50.33,OracleDB,DBAccounts-PRD,password,R3port!Orcl,report-oracle-db-01,1521,
+legacy_admin,10.20.30.99,,LinuxServers-PRD,password,L3gacy#Prd,legacy-admin-linux-prd,22,
+usuario_con_nombre_excesivamente_largo_para_forzar_la_validacion_del_esquema_pydantic_que_rechaza_identificadores_de_mas_de_ciento_veintiocho_caracteres_segun_la_api_pvwa,10.20.30.14,UnixSSH,LinuxServers-PRD,password,LongUsr$Prd,long-username-linux-prd,22,
